@@ -1,6 +1,6 @@
 fastapi==0.83.0
 requests==2.28.1
-pydentic==1.10.2
+pydantic==1.10.2
 sqlalchemy==1.4.41
 uvicorn==0.18.3
 psycopg2-binary==2.9.3
