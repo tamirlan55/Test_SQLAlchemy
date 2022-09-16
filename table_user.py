@@ -18,5 +18,11 @@ if __name__ == '__main__':
     Base.metadata.create_all(engine)
     session = SessionLocal()
 
-    result = session.query(User.country, User.os, func.count(User.id)).filter(User.exp_group == 3).group_by(User.country).group_by(User.os).having(func.count(User.id) > 100).order_by(func.count(User.id).desc()).all()
+    result = session.query(User.country, User.os, func.count(User.id))\
+        .filter(User.exp_group == 3)\
+        .group_by(User.country)\
+        .group_by(User.os)\
+        .having(func.count(User.id) > 100)\
+        .order_by(func.count(User.id).desc())\
+        .all()
     print(result)
