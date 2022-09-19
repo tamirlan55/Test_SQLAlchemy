@@ -6,7 +6,8 @@ from database import SessionLocal
 from sqlalchemy.orm import Session
 from schema import UserGet, PostGet, FeedGet
 from typing import List
-
+from sqlalchemy import func
+from loguru import logger
 
 app = FastAPI()
 
@@ -46,3 +47,20 @@ def get_post_feed(id: int, limit: int = 10, db: Session = Depends(get_db)):
         .limit(limit)\
         .all()
     return result
+
+
+@app.get('/post/recommendations/', response_model=List[PostGet])
+def get_top_posts(id: int, limit: int = 10, db: Session = Depends(get_db)):
+
+    result = db.query(Post)\
+        .select_from(Feed)\
+        .filter(Feed.action == 'like')\
+        .join(Post)\
+        .group_by(Post.id)\
+        .order_by((func.count(Post.id)).desc())\
+        .limit(limit)\
+        .all()
+
+    return result
+
+
